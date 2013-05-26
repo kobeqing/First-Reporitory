@@ -1,20 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal" >
 
-<RelativeLayout android:id="@+id/RelativeLayout01" xmlns:android="http://schemas.android.com/apk/res/android" 
-android:layout_gravity="center_vertical|center_horizontal" 
-android:layout_height="wrap_content" 
-android:layout_width="wrap_content">
-	
-	
-<ImageView android:id="@+id/ImageView01" 
- android:src="@drawable/logo3" 
-android:layout_width="wrap_content" 
-android:layout_height="wrap_content">
-</ImageView>
-<TextView android:id="@+id/TextView01" 
-android:text="@string/welcome"
-android:layout_below="@id/ImageView01" 
-android:layout_width="wrap_content" 
-android:layout_height="wrap_content">
-</TextView>
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stretchColumns="3" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo3" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+    </TableLayout>
+
 </RelativeLayout>

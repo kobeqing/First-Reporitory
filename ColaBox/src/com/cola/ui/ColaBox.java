@@ -15,17 +15,21 @@ public class ColaBox extends Activity {
 
 	ImageView imageview;
 	TextView textview;
+	ImageView imageView2;
 	int alpha = 255;
 	int b = 0;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		imageview = (ImageView) this.findViewById(R.id.ImageView01);
+		imageview = (ImageView) this.findViewById(R.id.imageView1);
 		textview = (TextView) this.findViewById(R.id.TextView01);
+		
+		imageView2 = (ImageView) this.findViewById(R.id.imageView2);
 
 		Log.v("ColaBox", "ColaBox start ...");
 		imageview.setAlpha(alpha);
+		imageView2.setAlpha(alpha);
 
 		new Thread(new Runnable() {
 			public void run() {
