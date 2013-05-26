@@ -34,15 +34,18 @@
          text-align:left;
          padding-top:4px; padding-bottom:4px;
          padding-left:10px; padding-right:10px;
+         width:100px;
+        word-break:break-all;
+        word-wrap:break-word;
         }
         .datalist tr.altrow{
          background-color:#c7e5ff;
         }
-        td.inner { background: green; height:30px;}
+        td.inner { background: green; height:40px;}
     </style>
     <script type="text/javascript">
         $(function(){
-        $('td.inner').corner();
+        $('td.inner').corner("10px");
         });
     </script>
     <table class="datalist" border="1" align="center">
@@ -79,11 +82,11 @@
                             </j:if>
                             <j:if test="${i != 0}">
                                 <j:if test="${build.getResult().toString().equals('SUCCESS')}">
-                                    <td class="inner" bgcolor="green">${build.getProject().getName()} <br/> ${build.getTime()} <br/> ${build.getResult().toString()}</td>
+                                    <td class="inner" bgcolor="green"><a href="${rootURL}/${build.getUrl()}">${build.getProject().getName()}</a> <br/> ${build.getResult().toString()}</td>
                                 </j:if>
                                 <j:if test="${!build.getResult().toString().equals('SUCCESS')}">
                                     <td>
-                                        ${build.getProject().getName()} <br/> ${build.getTime()} <br/> ${build.getResult().toString()}
+                                        <a href="${rootURL}/${build.getUrl()}">${build.getProject().getName()}</a> <br/> ${build.getResult().toString()}
                                     </td>
                                 </j:if>
                             </j:if>
@@ -99,12 +102,12 @@
                             <j:if test="${i != 0}">
                                 <j:if test="${build.getResult().toString().equals('SUCCESS')}">
                                     <td class="inner" bgcolor="green">
-                                        ${build.getProject().getName()} <br/> ${build.getTime()} <br/> ${build.getResult().toString()}
+                                        <a href="${rootURL}/${build.getUrl()}">${build.getProject().getName()}</a> <br/> ${build.getResult().toString()}
                                     </td>
                                 </j:if>
                                 <j:if test="${!build.getResult().toString().equals('SUCCESS')}">
                                     <td class="inner">
-                                        ${build.getProject().getName()} <br/> ${build.getTime()} <br/> ${build.getResult().toString()}
+                                        <a href="${rootURL}/${build.getUrl()}">${build.getProject().getName()}</a> <br/> ${build.getResult().toString()}
                                     </td>
                                 </j:if>
                             </j:if>
@@ -112,6 +115,5 @@
                     </tr>
                 </j:if>
             </j:forEach>
-
     </table>
 </j:jelly>

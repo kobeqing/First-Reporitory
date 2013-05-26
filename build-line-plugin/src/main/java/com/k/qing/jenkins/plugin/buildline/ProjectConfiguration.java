@@ -1,6 +1,8 @@
 package com.k.qing.jenkins.plugin.buildline;
 
+import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
+import hudson.model.Descriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -24,5 +26,12 @@ public class ProjectConfiguration extends AbstractDescribableImpl<ProjectConfigu
 
     public void setProjectNames(String projectNames) {
         this.projectNames = projectNames;
+    }
+
+    @Extension
+    public static class DescriptorImpl extends Descriptor<ProjectConfiguration> {
+        public String getDisplayName() {
+            return "";
+        }
     }
 }

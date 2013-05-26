@@ -69,6 +69,7 @@ public class BuildLineView extends View {
                 continue;
             }
             buildList.add(lastBuild);
+            String a =lastBuild.getUrl();
 
             if(this.downStreamProjectList != null) {
                 this.downStreamProjectList.clear();
