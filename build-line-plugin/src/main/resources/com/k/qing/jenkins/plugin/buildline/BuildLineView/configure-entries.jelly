@@ -1,0 +1,22 @@
+<!--
+  Edit View Page
+-->
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+	<f:entry title="Latest Build View Title" field="buildViewTitle">
+		<f:textbox name="buildViewTitle"/>
+  	</f:entry>
+    <f:entry title="Initial Job List" field="initialJobs">
+        <f:textbox name="initialJobs" />
+  	</f:entry>
+    <f:entry title="View Headers" field="viewHeaders">
+        <f:textbox name="viewHeaders" />
+    </f:entry>
+
+    <f:entry title="Line Configuration">
+        <f:repeatable field="lineList" name="lineList" >
+            <f:textbox name="projectNames" field="projectNames" default=""/>
+            <f:repeatableDeleteButton/>
+        </f:repeatable>
+    </f:entry>
+
+</j:jelly>
