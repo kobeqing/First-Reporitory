@@ -1,17 +1,18 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
          xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
-    <link href="${rootURL}/plugin/build-pipeline-plugin/css/main.css" type="text/css" rel="stylesheet"/>
+    <link href="${rootURL}/plugin/build-line/css/main.css" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet"
-          href="${rootURL}/plugin/build-pipeline-plugin/css/redmond/jquery-ui-1.8.14.custom.css"></link>
-    <link rel="stylesheet" href="${rootURL}/plugin/build-pipeline-plugin/css/jquery.fancybox-1.3.4.css"></link>
-    <link rel="stylesheet" href="${rootURL}/plugin/build-pipeline-plugin/css/jquery.tooltip.css"></link>
-    <script type="text/javascript" src="${rootURL}/plugin/build-pipeline-plugin/js/jquery-1.7.1.min.js"></script>
+          href="${rootURL}/plugin/build-line/css/redmond/jquery-ui-1.8.14.custom.css"></link>
+    <link rel="stylesheet" href="${rootURL}/plugin/build-line/css/jquery.fancybox-1.3.4.css"></link>
+    <link rel="stylesheet" href="${rootURL}/plugin/build-line/css/jquery.tooltip.css"></link>
+    <script type="text/javascript" src="${rootURL}/plugin/build-line/js/jquery-1.7.1.min.js"></script>
     <script type="text/javascript"
-            src="${rootURL}/plugin/build-pipeline-plugin/js/jquery-ui-1.8.14.custom.min.js"></script>
-    <script type="text/javascript" src="${rootURL}/plugin/build-pipeline-plugin/js/handlebars-1.0.0.beta.6.js"></script>
-    <script src="${rootURL}/plugin/build-pipeline-plugin/js/jquery.fancybox-1.3.4.js"></script>
-    <script src="${rootURL}/plugin/build-pipeline-plugin/js/jquery.tooltip.min.js"></script>
-    <script src="${rootURL}/plugin/build-pipeline-plugin/js/build-pipeline.js"></script>
+            src="${rootURL}/plugin/build-line/js/jquery-ui-1.8.14.custom.min.js"></script>
+    <script type="text/javascript" src="${rootURL}/plugin/build-line/js/handlebars-1.0.0.beta.6.js"></script>
+    <script src="${rootURL}/plugin/build-line/js/jquery.fancybox-1.3.4.js"></script>
+    <script src="${rootURL}/plugin/build-line/js/jquery.tooltip.min.js"></script>
+    <script src="${rootURL}/plugin/build-line/js/jquery.corner.js"></script>
+    <script src="${rootURL}/plugin/build-line/js/build-pipeline.js"></script>
     <style>
         .datalist{
          border:1px solid #0058a3;
@@ -37,7 +38,13 @@
         .datalist tr.altrow{
          background-color:#c7e5ff;
         }
+        td.inner { background: green; height:30px;}
     </style>
+    <script type="text/javascript">
+        $(function(){
+        $('td.inner').corner();
+        });
+    </script>
     <table class="datalist" border="1" align="center">
         <tr class="header">
             <td colspan="7" align="center" class="secondary-info">
@@ -68,11 +75,11 @@
                     <tr class="altrow">
                         <j:forEach var="build" items="${row}" begin="0" end="${row.size() - 1}" indexVar="i">
                             <j:if test="${i == 0}">
-                                <td>${build.toString()}</td>
+                                <td class="inner">${build.toString()}</td>
                             </j:if>
                             <j:if test="${i != 0}">
                                 <j:if test="${build.getResult().toString().equals('SUCCESS')}">
-                                    <td bgcolor="green">${build.getProject().getName()} <br/> ${build.getTime()} <br/> ${build.getResult().toString()}</td>
+                                    <td class="inner" bgcolor="green">${build.getProject().getName()} <br/> ${build.getTime()} <br/> ${build.getResult().toString()}</td>
                                 </j:if>
                                 <j:if test="${!build.getResult().toString().equals('SUCCESS')}">
                                     <td>
@@ -87,16 +94,16 @@
                     <tr>
                         <j:forEach var="build" items="${row}" begin="0" end="${row.size() - 1}" indexVar="i">
                             <j:if test="${i == 0}">
-                                <td>${build.toString()}</td>
+                                <td class="inner">${build.toString()}</td>
                             </j:if>
                             <j:if test="${i != 0}">
                                 <j:if test="${build.getResult().toString().equals('SUCCESS')}">
-                                    <td bgcolor="green">
+                                    <td class="inner" bgcolor="green">
                                         ${build.getProject().getName()} <br/> ${build.getTime()} <br/> ${build.getResult().toString()}
                                     </td>
                                 </j:if>
                                 <j:if test="${!build.getResult().toString().equals('SUCCESS')}">
-                                    <td>
+                                    <td class="inner">
                                         ${build.getProject().getName()} <br/> ${build.getTime()} <br/> ${build.getResult().toString()}
                                     </td>
                                 </j:if>

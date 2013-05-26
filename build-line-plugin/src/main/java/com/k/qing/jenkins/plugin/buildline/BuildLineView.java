@@ -14,7 +14,7 @@ import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: ejiaqsu_local
+ * User: K.Qing
  * Date: 5/6/13
  * Time: 2:03 PM
  * To change this template use File | Settings | File Templates.
@@ -61,10 +61,13 @@ public class BuildLineView extends View {
     public Map<String, Map<String, AbstractBuild>> getBuildMap() {
         Map<String, Map<String, AbstractBuild>> buildMap = new HashMap<String,  Map<String, AbstractBuild>>();
 
-        List<String> initialJobList = this.getInitialJobList(this.initialJobs);
-        for(String initialJob : initialJobList) {
+        List<String> firstJobList = this.getFirstJobList();
+        for(String firstJob : firstJobList) {
             List<AbstractBuild> buildList = new ArrayList<AbstractBuild>();
-            AbstractBuild lastBuild = (AbstractBuild)this.getProject(initialJob).getLastBuild();
+            AbstractBuild lastBuild = (AbstractBuild)this.getProject(firstJob).getLastBuild();
+            if(lastBuild == null) { //do not build, continue
+                continue;
+            }
             buildList.add(lastBuild);
 
             if(this.downStreamProjectList != null) {
@@ -72,14 +75,14 @@ public class BuildLineView extends View {
             } else {
                 this.downStreamProjectList = new ArrayList<Project>();
             }
-            List<Project> downStreamProjectList = this.getDownStreamProjects(this.getProject(initialJob));
+            List<Project> downStreamProjectList = this.getDownStreamProjects(this.getProject(firstJob));
             for(Project project : downStreamProjectList) {
                 AbstractBuild downStreamBuild = BuildUtil.getDownstreamBuild(project, lastBuild);
                 buildList.add(downStreamBuild);
                 lastBuild = downStreamBuild;
             }
 
-            Map<String, String> lineMap = this.getLineMap(initialJob);//key : jobName, value : header
+            Map<String, String> lineMap = this.getLineMap(firstJob);//key : jobName, value : header
 
             Map<String, AbstractBuild> latestLineMap = new HashMap<String, AbstractBuild>(); //key :header, value : build
 
@@ -96,7 +99,7 @@ public class BuildLineView extends View {
 
 
 
-            buildMap.put(initialJob, latestLineMap);
+            buildMap.put(firstJob, latestLineMap);
         }
 
         return buildMap;
@@ -195,14 +198,14 @@ public class BuildLineView extends View {
         return null;
     }
 
-    private List<String> getInitialJobList(String initialJobs) {
-        List<String> initialJobList = new ArrayList<String>();
+    private List<String> getFirstJobList() {
+        List<String> firstJobList = new ArrayList<String>();
 
         for(ProjectConfiguration pc : this.getLineList()) {
-            initialJobList.add(pc.getProjectNames().split(",")[0].split(":")[1].trim());
+            firstJobList.add(pc.getProjectNames().split(",")[0].split(":")[1].trim());
         }
 
-        return initialJobList;
+        return firstJobList;
     }
 
     public List<String> getViewHeaderList() {
@@ -244,9 +247,11 @@ public class BuildLineView extends View {
         String[] projectNames = req.getParameterValues("projectNames");
 
         List<ProjectConfiguration> projectConfigurationList = new ArrayList<ProjectConfiguration>();
-        for(String projectName : projectNames) {
-            ProjectConfiguration projectConfiguration = new ProjectConfiguration(projectName);
-            projectConfigurationList.add(projectConfiguration);
+        if(projectNames != null) {
+            for(String projectName : projectNames) {
+                ProjectConfiguration projectConfiguration = new ProjectConfiguration(projectName);
+                projectConfigurationList.add(projectConfiguration);
+            }
         }
 
         this.lineList = projectConfigurationList;
