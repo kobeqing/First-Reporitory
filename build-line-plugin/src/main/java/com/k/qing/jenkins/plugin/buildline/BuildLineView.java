@@ -58,8 +58,8 @@ public class BuildLineView extends View {
         return buildList;
     }
 
-    public Map<String, Map<String, AbstractBuild>> getBuildMap() {
-        Map<String, Map<String, AbstractBuild>> buildMap = new HashMap<String,  Map<String, AbstractBuild>>();
+    public Map<String, Map<String, BuildLineBuild>> getBuildMap() {
+        Map<String, Map<String, BuildLineBuild>> buildMap = new HashMap<String,  Map<String, BuildLineBuild>>();
 
         List<String> firstJobList = this.getFirstJobList();
         for(String firstJob : firstJobList) {
@@ -85,13 +85,14 @@ public class BuildLineView extends View {
 
             Map<String, String> lineMap = this.getLineMap(firstJob);//key : jobName, value : header
 
-            Map<String, AbstractBuild> latestLineMap = new HashMap<String, AbstractBuild>(); //key :header, value : build
+            Map<String, BuildLineBuild> latestLineMap = new HashMap<String, BuildLineBuild>(); //key :header, value : build
 
             for(String jobName : lineMap.keySet()) {
                 if(hasJob(jobName, buildList)) {
                     AbstractBuild build = this.getBuild(jobName, buildList);
                     if(build != null) {
-                        latestLineMap.put(lineMap.get(jobName), build);
+                    	BuildLineBuild buildLineBuild = new BuildLineBuild(build);
+                        latestLineMap.put(lineMap.get(jobName), buildLineBuild);
                     }
                 } else {
                     latestLineMap.put(lineMap.get(jobName), null);
@@ -109,7 +110,7 @@ public class BuildLineView extends View {
     public List<List<Object>> getTableData() {
         List<List<Object>> tableData = new ArrayList<List<Object>>();
         List<String> headerList = this.getViewHeaderList();
-        Map<String, Map<String, AbstractBuild>> buildMap = this.getBuildMap();
+        Map<String, Map<String, BuildLineBuild>> buildMap = this.getBuildMap();
 
         for(Map.Entry entry : buildMap.entrySet()) {
             List<Object> row = new ArrayList<Object>();
