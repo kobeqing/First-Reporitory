@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
  * User: K.Qing
  * Date: 5/6/13
  * Time: 2:03 PM
@@ -36,32 +35,10 @@ public class BuildLineView extends View {
         this.lineList = lineList;
     }
 
-    public List<AbstractBuild> getBuildList() {
-        Project firstJob = null;
-        List<Project> projectList = Jenkins.getInstance().getProjects();
-        for (Project project : projectList) {
-            if (this.initialJobs.equals(project.getName())) {
-                firstJob = project;
-            }
-        }
+    public Map<String, Map<String, Object>> getBuildMap() {
+        Map<String, Map<String, Object>> buildMap = new HashMap<String,  Map<String, Object>>();
 
-        List<Project> firstProjectList = firstJob.getDownstreamProjects();
-        AbstractBuild firstJobLastBuild = (AbstractBuild)firstJob.getLastBuild();
-
-        List<AbstractBuild> buildList = new ArrayList<AbstractBuild>();
-        buildList.add(firstJobLastBuild);
-        buildList.add((AbstractBuild)firstProjectList.get(0).getLastBuild());
-
-        firstJobLastBuild.getTime();
-        firstJobLastBuild.getProject().getName();
-
-        return buildList;
-    }
-
-    public Map<String, Map<String, BuildLineBuild>> getBuildMap() {
-        Map<String, Map<String, BuildLineBuild>> buildMap = new HashMap<String,  Map<String, BuildLineBuild>>();
-
-        List<String> firstJobList = this.getFirstJobList();
+        List<String> firstJobList = this.getUniqueLineTagList();
         for(String firstJob : firstJobList) {
             List<AbstractBuild> buildList = new ArrayList<AbstractBuild>();
             AbstractBuild lastBuild = (AbstractBuild)this.getProject(firstJob).getLastBuild();
@@ -69,7 +46,6 @@ public class BuildLineView extends View {
                 continue;
             }
             buildList.add(lastBuild);
-            String a =lastBuild.getUrl();
 
             if(this.downStreamProjectList != null) {
                 this.downStreamProjectList.clear();
@@ -84,23 +60,16 @@ public class BuildLineView extends View {
             }
 
             Map<String, String> lineMap = this.getLineMap(firstJob);//key : jobName, value : header
+            Map<String, Object> latestLineMap = new HashMap<String, Object>(); //key :header, value : build
 
-            Map<String, BuildLineBuild> latestLineMap = new HashMap<String, BuildLineBuild>(); //key :header, value : build
-
-            for(String jobName : lineMap.keySet()) {
-                if(hasJob(jobName, buildList)) {
-                    AbstractBuild build = this.getBuild(jobName, buildList);
-                    if(build != null) {
-                    	BuildLineBuild buildLineBuild = new BuildLineBuild(build);
-                        latestLineMap.put(lineMap.get(jobName), buildLineBuild);
-                    }
-                } else {
-                    latestLineMap.put(lineMap.get(jobName), null);
-                }
-            }
-
-
-
+			for (String jobName : lineMap.keySet()) {
+				AbstractBuild build = this.getBuild(jobName, buildList);
+				if (build != null) {
+					latestLineMap.put(lineMap.get(jobName), build);
+				} else {
+					latestLineMap.put(lineMap.get(jobName), lineMap.get(jobName));
+				}
+			}
             buildMap.put(firstJob, latestLineMap);
         }
 
@@ -110,31 +79,18 @@ public class BuildLineView extends View {
     public List<List<Object>> getTableData() {
         List<List<Object>> tableData = new ArrayList<List<Object>>();
         List<String> headerList = this.getViewHeaderList();
-        Map<String, Map<String, BuildLineBuild>> buildMap = this.getBuildMap();
+        Map<String, Map<String, Object>> buildMap = this.getBuildMap();
 
         for(Map.Entry entry : buildMap.entrySet()) {
             List<Object> row = new ArrayList<Object>();
-            row.add(entry.getKey());
-
             for(String header : headerList) {
                 row.add(((Map<String, AbstractBuild>)entry.getValue()).get(header.trim()));
             }
-
             tableData.add(row);
         }
 
         return tableData;
 
-    }
-
-    private boolean hasJob(String jobName, List<AbstractBuild> buildList) {
-        for(AbstractBuild build :buildList) {
-            String projectName = build.getProject().getName();
-            if(jobName.equals(projectName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private AbstractBuild getBuild(String jobName, List<AbstractBuild> buildList) {
@@ -146,35 +102,6 @@ public class BuildLineView extends View {
         }
         return null;
     }
-
-    private Map<String, String> getLineMap(String initialJob) {
-        Map<String, String> lineMap = new HashMap<String, String>();
-        if(initialJob != null) {
-            initialJob = initialJob.trim();
-        } else {
-            return lineMap;
-        }
-
-        for(ProjectConfiguration projectConfiguration : this.getLineList()) {
-
-            String projectNames = projectConfiguration.getProjectNames();
-
-            if(projectNames == null || projectNames.isEmpty()) {
-                continue;
-            }
-            String[] items = projectConfiguration.getProjectNames().split(",");
-
-            if(items[0].split(":")[1].trim().equals(initialJob)) {
-                for(String item : items) {
-                    String header = item.split(":")[0].trim();
-                    String jobName = item.split(":")[1].trim();
-                    lineMap.put(jobName, header);
-                }
-            }
-        }
-        return lineMap;
-    }
-
 
     private List<Project> downStreamProjectList = new ArrayList<Project>();
     private List<Project> getDownStreamProjects(Project project) {
@@ -200,24 +127,60 @@ public class BuildLineView extends View {
         return null;
     }
 
-    private List<String> getFirstJobList() {
+    private List<String> getUniqueLineTagList() {
         List<String> firstJobList = new ArrayList<String>();
-
         for(ProjectConfiguration pc : this.getLineList()) {
             firstJobList.add(pc.getProjectNames().split(",")[0].split(":")[1].trim());
         }
-
         return firstJobList;
     }
+    
+    /**
+     * Transform projects to map.
+     * Do trim() in the method.
+     * @param uniqueLineTag
+     * @return
+     */
+	private Map<String, String> getLineMap(String uniqueLineTag) {
+		Map<String, String> lineMap = new HashMap<String, String>();
+		if (uniqueLineTag != null) {
+			uniqueLineTag = uniqueLineTag.trim();
+		} else {
+			return lineMap;
+		}
 
-    public List<String> getViewHeaderList() {
+		for (ProjectConfiguration projectConfiguration : this.getLineList()) {
+
+			String projectNames = projectConfiguration.getProjectNames();
+
+			if (projectNames == null || projectNames.isEmpty()) {
+				continue;
+			}
+			String[] items = projectConfiguration.getProjectNames().split(",");
+
+			if (items[0].split(":")[1].trim().equals(uniqueLineTag)) {
+				for (String item : items) {
+					String header = item.split(":")[0].trim();
+					String jobName = item.split(":")[1].trim();
+					lineMap.put(jobName, header);
+				}
+			}
+		}
+		return lineMap;
+	}
+
+    /**
+     * Transform headers from string to list.
+     * Do trim in this method.
+     * @return
+     */
+    private List<String> getViewHeaderList() {
         List<String> viewHeaderList = new ArrayList<String>();
         if(this.viewHeaders == null) {
             return viewHeaderList;
         }
         String[] viewHeaderArray = this.viewHeaders.split(",");
-
-
+        
         for(String header : viewHeaderArray) {
             if(header != null) {
                 viewHeaderList.add(header.trim());
@@ -297,17 +260,16 @@ public class BuildLineView extends View {
         this.lineList = lineList;
     }
 
-    private void addLineList(ProjectConfiguration projectConfiguration) {
-        this.lineList.add(projectConfiguration);
-    }
-
     /**
      * This descriptor class is required to configure the View Page
      *
      */
     @Extension
     public static final class DescriptorImpl extends ViewDescriptor {
-
+    	public DescriptorImpl() {
+            super();
+        }
+    	
         @Override
         public String getDisplayName() {
             return "Build Line View";
