@@ -1,6 +1,6 @@
 package com.k.qing.jenkins.plugin.buildline;
 
-import com.k.qing.jenkins.plugin.buildline.util.BuildUtil;
+import com.k.qing.jenkins.plugin.buildline.util.*;
 import hudson.Extension;
 import hudson.model.*;
 import jenkins.model.Jenkins;

@@ -6,8 +6,7 @@ import hudson.model.Descriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ejiaqsu_local
+ * User: K.Qing
  * Date: 5/23/13
  * Time: 1:00 PM
  * To change this template use File | Settings | File Templates.
@@ -29,9 +28,16 @@ public class ProjectConfiguration extends AbstractDescribableImpl<ProjectConfigu
     }
 
     @Extension
-    public static class DescriptorImpl extends Descriptor<ProjectConfiguration> {
+    public static final class DescriptorImpl extends Descriptor<ProjectConfiguration> {
+        
+        public DescriptorImpl() {
+            super();
+        }
+
+        @Override
         public String getDisplayName() {
-            return "";
+            // TODO Auto-generated method stub
+            return null;
         }
     }
 }
