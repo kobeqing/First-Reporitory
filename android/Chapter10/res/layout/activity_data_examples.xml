@@ -1,16 +1,31 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".DataExamples" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-</RelativeLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">    
+	<TextView android:layout_width="fill_parent" 
+			  android:layout_height="wrap_content" 
+			  android:text="Click Buttons Below to Query, Add, Modify, Delete" 
+			  android:paddingTop="25dip" 
+			  android:paddingBottom="50dip"/>			  
+	<Button   android:text="Click to Query Contacts Database" 
+			  android:id="@+id/queryButton" 
+			  android:layout_width="wrap_content" 
+			  android:layout_height="wrap_content" 
+			  android:layout_gravity="center" />			  
+	<Button   android:text="Click to Add A Contact to the Database" 
+			  android:id="@+id/addContactButton" 
+			  android:layout_width="wrap_content" 
+			  android:layout_height="wrap_content" 
+			  android:layout_gravity="center" />			  
+	<Button   android:text="Click to Modify the Contact in the Database" 
+			  android:id="@+id/modifyPhoneButton" 
+			  android:layout_width="wrap_content" 
+			  android:layout_height="wrap_content" 
+			  android:layout_gravity="center" />			  
+	<Button   android:text="Click to Delete the Contact in the Database" 
+			  android:id="@+id/deleteContactButton" 
+			  android:layout_width="wrap_content" 
+			  android:layout_height="wrap_content" 
+			  android:layout_gravity="center" />			  
+</LinearLayout>
