@@ -11,7 +11,7 @@
     </f:entry>
     
     <f:entry title="Table Headers" field="tableHeaders">
-        <f:repeatable field="header" name="header" >
+        <f:repeatable field="tableInfoList" name="tableInfoList" >
             Headers : <f:textbox title="headers" name="headers" field="headers" default=""/>
             Branches : <f:textbox title="branches" name="branches" field="branches" default=""/>
             <f:repeatableDeleteButton/>

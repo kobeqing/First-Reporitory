@@ -29,6 +29,8 @@ public class BuildLineView extends View {
     private String buildViewTitle;
     private String viewHeaders;
     private List<ProjectConfiguration> lineList;
+
+    private List<TableInfo> tableInfoList;
     
     private static String CI_ARCHIVE_DIR = "ci_archive";
 
@@ -38,11 +40,12 @@ public class BuildLineView extends View {
 
 
     @DataBoundConstructor
-    public BuildLineView(final String name, final String buildViewTitle, final String initialJobs, final String viewHeaders, List<ProjectConfiguration> lineList) {
+    public BuildLineView(final String name, final String buildViewTitle, final String initialJobs, final String viewHeaders, List<ProjectConfiguration> lineList, List<TableInfo> tableInfoList) {
         super(name, Hudson.getInstance());
         this.buildViewTitle = buildViewTitle;
         this.viewHeaders = viewHeaders;
         this.lineList = lineList;
+        this.tableInfoList = tableInfoList;
     }
 
     /**
@@ -74,9 +77,6 @@ public class BuildLineView extends View {
             allTableData.put(tableInfo,tableData);
         }
         
-//        allTableData.entrySet()
-//        Map.Entry<?,?> ddd;
-//        ddd.get
         return allTableData;
     }
     
@@ -342,19 +342,6 @@ public class BuildLineView extends View {
         }
         
         return tableInfoList;
-//        List<String> viewHeaderList = new ArrayList<String>();
-//        if(this.viewHeaders == null) {
-//            return viewHeaderList;
-//        }
-//        String[] viewHeaderArray = this.viewHeaders.split(",");
-//
-//
-//        for(String header : viewHeaderArray) {
-//            if(header != null) {
-//                viewHeaderList.add(header.trim());
-//            }
-//        }
-//        return viewHeaderList;
     }
 
     @Override
@@ -380,7 +367,7 @@ public class BuildLineView extends View {
 
         List<TableInfo> tableHeaderList = req.bindParametersToList(TableInfo.class, "");
         
-        req.getAttribute("");
+        this.tableInfoList = req.bindParametersToList(TableInfo.class, "");
 
         List<ProjectConfiguration> projectConfigurationList = new ArrayList<ProjectConfiguration>();
         for(String projectName : projectNames) {
@@ -423,6 +410,14 @@ public class BuildLineView extends View {
 
     private void addLineList(ProjectConfiguration projectConfiguration) {
         this.lineList.add(projectConfiguration);
+    }
+
+    public List<TableInfo> getTableInfoList() {
+        return tableInfoList;
+    }
+
+    public void setTableInfoList(List<TableInfo> tableInfoList) {
+        this.tableInfoList = tableInfoList;
     }
 
     /**
