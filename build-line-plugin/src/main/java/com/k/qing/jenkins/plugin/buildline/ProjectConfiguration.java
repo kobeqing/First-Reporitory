@@ -26,7 +26,7 @@ public class ProjectConfiguration extends AbstractDescribableImpl<ProjectConfigu
     public void setProjectNames(String projectNames) {
         this.projectNames = projectNames;
     }
-
+    
     @Extension
     public static final class DescriptorImpl extends Descriptor<ProjectConfiguration> {
         
