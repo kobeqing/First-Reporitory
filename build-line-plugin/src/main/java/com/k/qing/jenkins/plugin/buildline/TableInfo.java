@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TableInfo {
+
+    private String headers;
+    private String branches;
 	private List<String> headerList = new ArrayList<String>();
 	private List<String> branchList = new ArrayList<String>();
 
@@ -22,6 +25,22 @@ public class TableInfo {
 	public void setBranchList(List<String> branchList) {
 		this.branchList = branchList;
 	}
+
+    public String getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(String headers) {
+        this.headers = headers;
+    }
+
+    public String getBranches() {
+        return branches;
+    }
+
+    public void setBranches(String branches) {
+        this.branches = branches;
+    }
 
 	@Override
 	public int hashCode() {

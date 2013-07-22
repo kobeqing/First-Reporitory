@@ -26,7 +26,6 @@ import java.util.Map.Entry;
  */
 public class BuildLineView extends View {
 
-	private String initialJobs;
     private String buildViewTitle;
     private String viewHeaders;
     private List<ProjectConfiguration> lineList;
@@ -41,7 +40,6 @@ public class BuildLineView extends View {
     @DataBoundConstructor
     public BuildLineView(final String name, final String buildViewTitle, final String initialJobs, final String viewHeaders, List<ProjectConfiguration> lineList) {
         super(name, Hudson.getInstance());
-        this.initialJobs = initialJobs;
         this.buildViewTitle = buildViewTitle;
         this.viewHeaders = viewHeaders;
         this.lineList = lineList;
@@ -236,12 +234,12 @@ public class BuildLineView extends View {
     }
 
     private List<AbstractBuild> downStreamBuildList = new ArrayList<AbstractBuild>();
-    private List<AbstractBuild> getDownStreamBuildList(List<Project> downstreamProjectList, AbstractBuild upstreamBuild) {
+    private List<AbstractBuild> getDownStreamBuildList(List<AbstractProject> downstreamProjectList, AbstractBuild upstreamBuild) {
         if(downstreamProjectList.isEmpty()) {
             return downStreamBuildList;
         } else {
-            for(Project project : downstreamProjectList) {
-                List<Project> nextDownstreamProjectList = project.getDownstreamProjects();
+            for(AbstractProject project : downstreamProjectList) {
+                List<AbstractProject> nextDownstreamProjectList = project.getDownstreamProjects();
                 AbstractBuild build = BuildUtil.getDownstreamBuild(project, upstreamBuild);
                 if(build != null) {
                     downStreamBuildList.add(build);
@@ -376,10 +374,13 @@ public class BuildLineView extends View {
 
     @Override
     protected void submit(StaplerRequest req) throws IOException, ServletException, Descriptor.FormException {
-        this.initialJobs = req.getParameter("initialJobs");
         this.viewHeaders = req.getParameter("viewHeaders");
         this.buildViewTitle = req.getParameter("buildViewTitle");
         String[] projectNames = req.getParameterValues("projectNames");
+
+        List<TableInfo> tableHeaderList = req.bindParametersToList(TableInfo.class, "");
+        
+        req.getAttribute("");
 
         List<ProjectConfiguration> projectConfigurationList = new ArrayList<ProjectConfiguration>();
         for(String projectName : projectNames) {
@@ -410,14 +411,6 @@ public class BuildLineView extends View {
 
     public void setBuildViewTitle(final String buildViewTitle) {
         this.buildViewTitle = buildViewTitle;
-    }
-
-    public String getInitialJobs() {
-        return initialJobs;
-    }
-
-    public void setInitialJobs(final String initialJobs) {
-        this.initialJobs = initialJobs;
     }
 
     public List<ProjectConfiguration> getLineList() {
