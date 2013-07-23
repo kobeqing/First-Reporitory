@@ -27,9 +27,7 @@ import java.util.Map.Entry;
 public class BuildLineView extends View {
 
     private String buildViewTitle;
-    private String viewHeaders;
     private List<ProjectConfiguration> lineList;
-
     private List<TableInfo> tableInfoList;
     
     private static String CI_ARCHIVE_DIR = "ci_archive";
@@ -40,10 +38,9 @@ public class BuildLineView extends View {
 
 
     @DataBoundConstructor
-    public BuildLineView(final String name, final String buildViewTitle, final String initialJobs, final String viewHeaders, List<ProjectConfiguration> lineList, List<TableInfo> tableInfoList) {
+    public BuildLineView(final String name, final String buildViewTitle, final String initialJobs, List<ProjectConfiguration> lineList, List<TableInfo> tableInfoList) {
         super(name, Hudson.getInstance());
         this.buildViewTitle = buildViewTitle;
-        this.viewHeaders = viewHeaders;
         this.lineList = lineList;
         this.tableInfoList = tableInfoList;
     }
@@ -56,7 +53,7 @@ public class BuildLineView extends View {
         
         Map<TableInfo, List<List<Object>>> allTableData = new HashMap<TableInfo, List<List<Object>>>();
         
-        List<TableInfo> tableInfoList = this.getViewHeaderList();
+        List<TableInfo> tableInfoList = this.getTableInfoList();
         
         for(TableInfo tableInfo : tableInfoList) {
             List<List<Object>> tableData = new ArrayList<List<Object>>();
@@ -306,43 +303,43 @@ public class BuildLineView extends View {
      * Branch, Regression, Bullseye$xft5,xft7;
      * @return
      */
-    public List<TableInfo> getViewHeaderList() {
-        
-        List<TableInfo> tableInfoList = new ArrayList<TableInfo>();
-        
-        String[] tableInfos = this.viewHeaders.split(";");
-        
-        for(String tableInfo : tableInfos) {
-            String[] header_branch = tableInfo.split("\\$");
-            String headers = header_branch[0];
-            
-            TableInfo tableInfoObject = new TableInfo();
-            
-            String[] headerArray = headers.split(",");
-            List<String> headerList = new ArrayList<String>();
-            for(String header : headerArray) {
-                if(header != null) {
-                    headerList.add(header.trim());
-                }
-            }
-            tableInfoObject.setHeaderList(headerList);
-            
-            if(header_branch.length > 1) {
-                List<String> branchList = new ArrayList<String>();
-                String branchs = header_branch[1];
-                String[] branchArray = branchs.split(",");
-                for(String branch : branchArray) {
-                    if(branch != null) {
-                        branchList.add(branch.trim());
-                    }
-                }
-                tableInfoObject.setBranchList(branchList);
-            }
-            tableInfoList.add(tableInfoObject);
-        }
-        
-        return tableInfoList;
-    }
+//    public List<TableInfo> getViewHeaderList() {
+//
+//        List<TableInfo> tableInfoList = new ArrayList<TableInfo>();
+//
+//        String[] tableInfos = this.viewHeaders.split(";");
+//
+//        for(String tableInfo : tableInfos) {
+//            String[] header_branch = tableInfo.split("\\$");
+//            String headers = header_branch[0];
+//
+//            TableInfo tableInfoObject = new TableInfo();
+//
+//            String[] headerArray = headers.split(",");
+//            List<String> headerList = new ArrayList<String>();
+//            for(String header : headerArray) {
+//                if(header != null) {
+//                    headerList.add(header.trim());
+//                }
+//            }
+//            tableInfoObject.setHeaderList(headerList);
+//
+//            if(header_branch.length > 1) {
+//                List<String> branchList = new ArrayList<String>();
+//                String branchs = header_branch[1];
+//                String[] branchArray = branchs.split(",");
+//                for(String branch : branchArray) {
+//                    if(branch != null) {
+//                        branchList.add(branch.trim());
+//                    }
+//                }
+//                tableInfoObject.setBranchList(branchList);
+//            }
+//            tableInfoList.add(tableInfoObject);
+//        }
+//
+//        return tableInfoList;
+//    }
 
     @Override
     public Collection<TopLevelItem> getItems() {
@@ -361,7 +358,6 @@ public class BuildLineView extends View {
 
     @Override
     protected void submit(StaplerRequest req) throws IOException, ServletException, Descriptor.FormException {
-        this.viewHeaders = req.getParameter("viewHeaders");
         this.buildViewTitle = req.getParameter("buildViewTitle");
         String[] projectNames = req.getParameterValues("projectNames");
 
@@ -382,14 +378,6 @@ public class BuildLineView extends View {
     @Override
     public Item doCreateItem(StaplerRequest req, StaplerResponse rsp) throws IOException, ServletException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public String getViewHeaders() {
-        return viewHeaders;
-    }
-
-    public void setViewHeaders(final String viewHeaders) {
-        this.viewHeaders = viewHeaders;
     }
 
     public String getBuildViewTitle() {

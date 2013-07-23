@@ -5,16 +5,16 @@
 	<f:entry title="Latest Build View Title" field="buildViewTitle">
 		<f:textbox name="buildViewTitle"/>
   	</f:entry>
-  	
-    <f:entry title="View Headers" field="viewHeaders">
-        <f:textarea name="viewHeaders" />
-    </f:entry>
-    
-    <f:entry title="Table Headers" field="tableHeaders">
+
+    <f:entry title="Table Information" field="tableHeaders">
         <f:repeatable field="tableInfoList" name="tableInfoList" >
+        <f:repeatableDeleteButton/><br/>
             Headers : <f:textbox title="headers" name="headers" field="headers" default=""/>
             Branches : <f:textbox title="branches" name="branches" field="branches" default=""/>
-            <f:repeatableDeleteButton/>
+            <f:repeatable field="ee" name="ee" >
+                        ee : <f:textbox title="f" name="e" field="e" default=""/>
+                        <f:repeatableDeleteButton/>
+            </f:repeatable>
         </f:repeatable>
     </f:entry>
 

@@ -1,9 +1,13 @@
 package com.k.qing.jenkins.plugin.buildline;
 
+import hudson.Extension;
+import hudson.model.AbstractDescribableImpl;
+import hudson.model.Descriptor;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class TableInfo {
+public class TableInfo extends AbstractDescribableImpl<TableInfo> {
 
     private String headers;
     private String branches;
@@ -32,6 +36,14 @@ public class TableInfo {
 
     public void setHeaders(String headers) {
         this.headers = headers;
+        if(headers != null && !headers.isEmpty()) {
+            String[] headerArray = headers.split(",");
+            for(String header : headerArray) {
+                if(header != null) {
+                    headerList.add(header.trim());
+                }
+            }
+        }
     }
 
     public String getBranches() {
@@ -40,6 +52,14 @@ public class TableInfo {
 
     public void setBranches(String branches) {
         this.branches = branches;
+        if(branches != null && !branches.isEmpty()) {
+            String[] branchArray = branches.split(",");
+            for(String branch : branchArray) {
+                if(branch != null) {
+                    branchList.add(branch.trim());
+                }
+            }
+        }
     }
 
 	@Override
@@ -75,4 +95,17 @@ public class TableInfo {
 		return true;
 	}
 
+    @Extension
+    public static final class DescriptorImpl extends Descriptor<TableInfo> {
+
+        public DescriptorImpl() {
+            super();
+        }
+
+        @Override
+        public String getDisplayName() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+    }
 }
