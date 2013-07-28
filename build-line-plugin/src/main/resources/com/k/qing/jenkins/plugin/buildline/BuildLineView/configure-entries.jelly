@@ -2,15 +2,11 @@
   Edit View Page
 -->
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
-	<f:entry title="Latest Build View Title" field="buildViewTitle">
+	<f:entry title="Latest Build View Title" field="buildViewTitle" help="/plugin/build-line/help/help-buildViewTitle.html">
 		<f:textbox name="buildViewTitle"/>
   	</f:entry>
 
-    <f:entry title="View Headers" field="viewHeaders">
-        <f:textarea name="viewHeaders" />
-    </f:entry>
-
-    <f:entry title="Table Information">
+    <f:entry title="Table Information" help="/plugin/build-line/help/help-tableInformation.html">
         <f:repeatable field="tableInfoList" name="tableInfoList" >
             Headers : <f:textbox name="headers" field="headers" default=""/>
             Branches : <f:textbox name="branches" field="branches" default=""/>
@@ -19,7 +15,7 @@
     </f:entry>
 
     <f:entry title="Line Configuration">
-        <f:repeatable field="lineList" name="lineList" >
+        <f:repeatable field="lineList" name="lineList">
             <f:textbox name="projectNames" field="projectNames" default=""/>
             <f:repeatableDeleteButton/>
         </f:repeatable>
