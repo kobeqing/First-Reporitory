@@ -296,50 +296,6 @@ public class BuildLineView extends View {
         return firstJob2TitleValueMap;
     }
     
-    /**
-     * Get the view header information from main.jelly.
-     * Input like following:
-     * Branch, Build, Coverity, UT, Software Upgrade, Regression, Bullseye$xft1,xft2,xft3;
-     * Branch, Regression, Bullseye$xft5,xft7;
-     * @return
-     */
-//    public List<TableInfo> getViewHeaderList() {
-//
-//        List<TableInfo> tableInfoList = new ArrayList<TableInfo>();
-//
-//        String[] tableInfos = this.viewHeaders.split(";");
-//
-//        for(String tableInfo : tableInfos) {
-//            String[] header_branch = tableInfo.split("\\$");
-//            String headers = header_branch[0];
-//
-//            TableInfo tableInfoObject = new TableInfo();
-//
-//            String[] headerArray = headers.split(",");
-//            List<String> headerList = new ArrayList<String>();
-//            for(String header : headerArray) {
-//                if(header != null) {
-//                    headerList.add(header.trim());
-//                }
-//            }
-//            tableInfoObject.setHeaderList(headerList);
-//
-//            if(header_branch.length > 1) {
-//                List<String> branchList = new ArrayList<String>();
-//                String branchs = header_branch[1];
-//                String[] branchArray = branchs.split(",");
-//                for(String branch : branchArray) {
-//                    if(branch != null) {
-//                        branchList.add(branch.trim());
-//                    }
-//                }
-//                tableInfoObject.setBranchList(branchList);
-//            }
-//            tableInfoList.add(tableInfoObject);
-//        }
-//
-//        return tableInfoList;
-//    }
 
     @Override
     public Collection<TopLevelItem> getItems() {
@@ -361,9 +317,7 @@ public class BuildLineView extends View {
         this.buildViewTitle = req.getParameter("buildViewTitle");
         String[] projectNames = req.getParameterValues("projectNames");
 
-        List<TableInfo> tableHeaderList = req.bindParametersToList(TableInfo.class, "");
-        
-        this.tableInfoList = req.bindParametersToList(TableInfo.class, "");
+        this.tableInfoList = req.bindParametersToList(TableInfo.class, "table_");
 
         List<ProjectConfiguration> projectConfigurationList = new ArrayList<ProjectConfiguration>();
         for(String projectName : projectNames) {

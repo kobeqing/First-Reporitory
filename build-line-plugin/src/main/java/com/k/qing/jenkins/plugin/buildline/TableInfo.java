@@ -3,6 +3,7 @@ package com.k.qing.jenkins.plugin.buildline;
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
+import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,28 @@ public class TableInfo extends AbstractDescribableImpl<TableInfo> {
     private String branches;
 	private List<String> headerList = new ArrayList<String>();
 	private List<String> branchList = new ArrayList<String>();
+
+    @DataBoundConstructor
+    public TableInfo(String headers, String branches) {
+        this.headers = headers;
+        this.branches = branches;
+        if(headers != null && !headers.isEmpty()) {
+            String[] headerArray = headers.split(",");
+            for(String header : headerArray) {
+                if(header != null) {
+                    headerList.add(header.trim());
+                }
+            }
+        }
+        if(branches != null && !branches.isEmpty()) {
+            String[] branchArray = branches.split(",");
+            for(String branch : branchArray) {
+                if(branch != null) {
+                    branchList.add(branch.trim());
+                }
+            }
+        }
+    }
 
 	public List<String> getHeaderList() {
 		return headerList;

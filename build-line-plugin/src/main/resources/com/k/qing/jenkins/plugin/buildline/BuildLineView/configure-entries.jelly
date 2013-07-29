@@ -6,11 +6,13 @@
 		<f:textbox name="buildViewTitle"/>
   	</f:entry>
 
+
     <f:entry title="Table Information" help="/plugin/build-line/help/help-tableInformation.html">
         <f:repeatable field="tableInfoList" name="tableInfoList" >
-            Headers : <f:textbox name="headers" field="headers" default=""/>
-            Branches : <f:textbox name="branches" field="branches" default=""/>
-            <f:repeatableDeleteButton/>
+        <f:repeatableDeleteButton/><br/>
+        <!-- name is used for http request, field is used for bind to jenkins bean-->
+            Headers : <f:textbox name="table_headers" field="headers" default=""/>
+            Branches : <f:textbox name="table_branches" field="branches" default=""/>
         </f:repeatable>
     </f:entry>
 
@@ -20,5 +22,4 @@
             <f:repeatableDeleteButton/>
         </f:repeatable>
     </f:entry>
-
 </j:jelly>
